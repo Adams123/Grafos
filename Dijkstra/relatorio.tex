@@ -1,0 +1,205 @@
+\documentclass[10pt,a4paper]{article}
+
+\usepackage{arev}
+\usepackage{indentfirst}
+\usepackage{amsthm,amsfonts,amsmath,amssymb}
+\usepackage[brazilian]{babel}
+\usepackage[T1]{fontenc}
+%\usepackage[latin1]{inputenc}
+\usepackage[utf8]{inputenc}
+%\usepackage{multicol}
+\usepackage{geometry}
+\geometry{a4paper,inner=2cm,outer=2cm,top=2cm,bottom=2cm}
+\usepackage{setspace}
+\usepackage{natbib}
+\usepackage{pgf,tikz}
+\usepackage{pgfplots}
+\usepackage{listings}
+%\usepackage{color}
+%\usepackage{algpseudocode}
+%\usepackage{algorithm}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{subfigure}
+\usepackage{wrapfig}
+\usepackage[linesnumbered, ruled, portuguese]{algorithm2e}
+\usepackage{multirow}
+%\usepackage{verbatim}
+%\usepackage[active,tightpage]{preview}
+%\PreviewEnvironment{tikzpicture}
+%\setlength\PreviewBorder{5pt}
+
+%\setlength{\oddsidemargin}{-0.8cm}
+%\setlength{\textwidth}{17,4cm} \setlength{\textheight}{25cm}
+%\setlength{\topmargin}{-2.5cm}
+
+\newcommand{\pr}{\hspace*{0.6cm}}
+\newcommand{\vesp}{\vspace*{.3cm}}
+
+\newcommand{\sen}{\mbox{\,sen}}
+\newcommand{\cotg}{\mbox{\,cotg\,}}
+\newcommand{\tg}{\mbox{\,tg\,}}
+\newcommand{\cose}{\mbox{\,cos\,}}
+\newcommand{\expo}{\mbox{\,e\,}}
+\newcommand{\logg}{\mbox{\,log}}
+\newcommand{\Sum}{\displaystyle\sum}
+\newcommand{\Prod}{\displaystyle\prod}
+\newcommand{\Int}{\displaystyle\int}
+\newcommand{\dint}{\, \mathrm{d}}
+\newcommand{\Lim}{\displaystyle \lim}
+\newcommand{\Frac}{\displaystyle\frac}
+
+\newcommand{\Nc}{N_{cont}}
+\newcommand{\Ni}{N_{int}}
+\newcommand{\Ne}{N_{estrela}}
+
+\newcommand{\Dparc}[2]{\dfrac{\partial #1}{\partial #2}}
+\newcommand{\Dparcn}[3]{\dfrac{\partial^#3 #1}{\partial^#3 #2}}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\V}{\mathcal{V}}
+\newcommand{\I}{I_u}
+\newcommand{\Fi}{\varphi}
+\newcommand{\se}{\mbox{ se }}
+\newcommand{\norma}[1]{\left|\left| #1 \right|\right|}
+\newcommand{\sistema}[1]{ \left\{ #1 \right. }
+
+\newtheorem{exemplo}{\pr \sc Exemplo}[section]%[chapter]
+\newtheorem{defi}{\pr \sc Defini\c{c}\~ao}[section]%[chapter]
+\newtheorem{obs}{\pr \sc Observa\cao}[section]%[chapter]
+\newtheorem{teor}{\pr \sc Teorema}[section]%[chapter]
+\newtheorem{lema}{\pr \sc Lema}[section]%[chapter]
+\newtheorem{prop}{\pr \sc Proposi\cao}[section]%[chapter]
+\newtheorem{exercise}{\pr \sc Exerc\'\i cios}[section]%[chapter]
+\newtheorem{alg}{\pr Algoritmo}[section]%[chapter]
+
+\setlength{\columnsep}{1cm}
+
+\setlength{\columnsep}{1cm}
+
+
+%\author{\textbf{Aluna:} Camila Faria Afonso Lages - 6419748}
+%\textbf{Professor:} José Alberto Cuminato\\
+%\textit{Instituto de Ciências Matemáticas e de Computação - ICMC}\\ \textit{USP - São Carlos} \\}
+
+\lstset{language=C}
+
+\lstdefinestyle{customc}{
+  belowcaptionskip=1\baselineskip,
+  breaklines=true,
+  xleftmargin=\parindent,
+  language=C,
+  showstringspaces=false,
+    keywordstyle=\bfseries\color{green!40!black},
+  commentstyle=\itshape\color{purple!40!black},
+  identifierstyle=\color{blue},
+  stringstyle=\color{orange},
+} 
+
+%basicstyle=\footnotesize\ttfamily,
+
+\lstset{escapechar=@,style=customc}
+
+\begin{document}
+
+\onehalfspace
+
+\thispagestyle{empty}
+\hrule \vspace{0.4pc} \hrule
+\bigskip
+\begin{center}
+ {\Large  \textbf{Dijkstra}}
+\end{center}
+
+
+\begin{center}
+	\large{ \textbf{Aluno:}  \begin{tabular}{ccc}
+							Adams Vietro Codignotto da Silva  & - & 6791943\\ 
+					 \end{tabular} 
+		\vspace{0.2cm}
+		
+	\textbf{Professor:} { Alneu} }
+		\vspace{0.2cm}
+		
+	 \end{center}
+\bigskip
+\hrule \vspace{0.4pc} \hrule
+
+\newpage
+
+\pagenumbering{arabic}
+
+\section{Introdução}
+
+O algoritmo de Djikstra é utilizado para descobrir o menor caminho entre dois vértices, dado um grafo com arestas cujos pesos são positivos. Este programa executa o algoritmo dado um arquivo de entrada contendo a quantidade de arestas e seus respectivos pesos.
+
+\section{Objetivos}
+
+Utilizar o mapa rodoviário dado e interpretá-lo como um grafo. Após isso, utilizando o algoritmo de Djikstra, encontrar a menor distancia de uma cidade a outra, no melhor desempenho possível.
+
+\section{Implementação}
+
+\subsection{Estrutura}
+Foram utilizadas duas estruturas: uma lista de vértices (um para cada cidade), e uma matriz. Ambos são declarados estaticamente, porém, modificando o cabeçalho VERTICES no arquivo header, pode-se alterar o tamanho de ambos sem causar danos ao algoritmo.
+A lista dos n vértices é composta pela struct grafo, sendo este declarado globalmente e estático:
+%CÓDIGO
+\begin{lstlisting}
+typedef struct
+{
+    int distancia; //distancia do node ate a origem
+    int existe; //se ainda esta no grafo ou nao
+    int anterior; //anterior no caminho
+} grafo;
+\end{lstlisting}
+
+O grafo é montado a partir de um arquivo de entrada (também declarado no cabeçalho \textit{\textbf{INPUT}}), o qual deve conter na primeira linha a quantidade de cidades, e depois o nome das cidades (sem espaços) em cada linha.
+
+A matriz é declarada globalmente como \textit{\textbf{int MPeso[VERTICES][VERTICES]}}, e esta é utilizada para representar o peso entre o vértice $i$ e $j$: ou seja, o campo \textit{\textbf{MPeso[i][j]}} contem o peso da aresta entre os vértices $i$ e $j$. Caso este seja 0, não há uma aresta entre os mesmos. Esta é montada a partir de um arquivo de entrada (declarado no cabeçalho \textit{\textbf{INPUT2}}), que contem na primeira linha a quantidade de arestas (caminhos) existentes, e após isso a cidade de origem, destino e seu peso em cada linha.
+
+\subsection{Algoritmo}
+
+O Djikstra utilizado percorre n vértices vizinhos ao vértice de origem, procurando o menor caminho e o removendo (simplesmente setando a flag \textit{existe} como 0, indicando que este é inexistente). Após isso, verifica se o peso deste é menor que o peso previamente encontrado, se a aresta entre o vértice atual e de origem existe, e se é necessário fazer o relaxamento do mesmo. Isso é repetido ate que o vértice de destino seja encontrado.
+
+\newpage
+%CÓDIGO AQUI
+\begin{lstlisting}
+void dijkstra()
+{
+    int interacao;
+    for(interacao=0; interacao<arestas; interacao++) //enquanto existirem arestas a serem percorridas
+    {
+        int i;
+        int v = acha_menor(); //v eh a menor aresta vizinha a source
+        G[v].existe = 0; //Remove a menor aresta de G
+        for (i = 0; i < arestas; i++){
+            if (G[i].existe)//vertice deve estar no grafo
+                if(MPeso[v][i] != 0)//a aresta entre o menor e o atual deve existir
+                    if((G[v].distancia + MPeso[v][i] < G[i].distancia || G[i].distancia == 0))
+                    {
+                        //caso a distancia do menor + distancia entre o atual e o menor
+                        //seja menor que a distancia do no sendo visitado ou caso ela nao tenha sido inicializada
+                        /*----RELAXAMENTO DE [V][I]----*/
+                        G[i].distancia = G[v].distancia + MPeso[v][i]; //vertice sendo visitado recebe peso do menor + distancia entre menor e sendo visitado
+                        G[i].anterior = v; //caminho mais proximo eh salvo
+                    }
+        }
+        if(v==dest) {
+                return;
+        }
+    }
+}
+\end{lstlisting}
+
+O resultado é uma lista invertida do caminho de origem ate o destino (que depois é invertida novamente e o caminho é finalmente impresso). A lista inicia-se no vértice de destino e é percorrida de trás para frente, onde \textit{\textbf{G[i].anterior}} contém o índice do próximo vértice a ser visitado.
+
+\section{Resultados}
+
+O algoritmo se mostrou bastante estável, com complexidade $O(n\log(n))$, onde n é a quantidade de vértices. Os caminhos, sempre que existentes, são garantidos de serem encontrados.
+
+A implementação do algoritmo utilizando uma estrutura de grafos em matriz se mostrou relativamente simples, se comparado com uma estrutura de grafos em listas. A estrutura de matriz acaba utilizando mais espaço de memória, porém a velocidade dos acessos são muito mais rápidas.
+
+\section{Conclusão}
+
+Para grafos pequenos, a estrutura em matriz é mais recomendada, porém, o uso de memória tem ordem quadrática, ou seja, para grafos muito grandes, o recomendado é o uso de listas dinâmicas. O algoritmo de Dijkstra é indicado em ambos os casos, porém ele é mais rápido utilizando matrizes ao invés de listas, apesar de a primeira ocupar mais memória.
+
+\end{document}
